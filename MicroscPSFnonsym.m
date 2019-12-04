@@ -38,7 +38,7 @@ function PSF = MicroscPSFnonsym(params)
 %
 %   Acknowledgement: PSFgenerator (http://bigwww.epfl.ch/algorithms/psfgenerator/)
 %
-%   Copyright © Jizhou Li, Feng Xue and Thierry Blu, 2018
+%   Copyright Â© Jizhou Li, Feng Xue and Thierry Blu, 2018
 %   Update date: 5 July, 2018
 %   - add the non-cylindrically symmetric support
 %   Note: the code is not fully tested. 
@@ -165,8 +165,14 @@ theta = ANG*pi/180;
 [X,Y] = meshgrid(0:params.nx-1,0:params.ny-1);
 rPixel = sqrt((X-xp).^2 + (Y-yp).^2);
 
+% theta2 = atand((Y-yp)./(X-xp));
+% theta2index = interp1(ANG,ANGindex, theta2);
+
+% interp1 unique points issue
 theta2 = atand((Y-yp)./(X-xp));
-theta2index = interp1(ANG,ANGindex, theta2);
+[ANG,ind] = unique(ANG);
+theta2index = interp1(ANG,ANGindex(ind), theta2);
+
 
 for zi = 1: params.nz
     
